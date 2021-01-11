@@ -7,7 +7,7 @@ attack
 die */
 
 :root{
-    --player-size: 4;
+    --player-size: 2;
 }
 
 .playerContainer-1{
@@ -16,9 +16,13 @@ die */
     position: relative;
     overflow: hidden;
     z-index: 1000;
+    
 }
 
+
+
 #player1{
+    
     width: calc(320px*var(--player-size));
     height: calc(160px*var(--player-size));
     image-rendering: pixelated;
@@ -43,6 +47,9 @@ die */
     top: calc(-96px*var(--player-size));
 }
 
+.flip{
+    transform: scaleX(-1);
+}
 
 @keyframes movePlayer{
     0%{
