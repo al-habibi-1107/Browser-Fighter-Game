@@ -1,11 +1,15 @@
 
 canvas = document.getElementById("gameCanvas");
 
+//to fix the height and width of canvas
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight ;
 
 // Gets hold of the canvas area
 canvasBoard = canvas.getContext("2d");
+
+playerImg1 = document.getElementById('player1');
+playerContainer1 = document.querySelector('.playerContainer-1');
 
 
 
@@ -29,12 +33,28 @@ class GroundBlocks{
 }
 
 
+class Player{
+
+    constructor(x,y,hp){
+        this.x = x;
+        this.y = y;
+        this.hp = hp;
+    }
+
+    show(){
+       playerContainer1.style.top = `${this.y}px`;
+       playerContainer1.style.left = `${this.x}px`;
+    }
+}
+
+
 var canvasXPosition = (window.innerWidth/2) - 500 ;
 var canvasYPosition = (window.innerHeight/2) - 300;
 
 // making grounds
 var ground = new GroundBlocks(canvasXPosition,canvasYPosition+550,1000,50);
 
+var player1 = new Player(canvasXPosition+20,canvasYPosition+550,1000);
 
 
 // on resize fix the sizes
@@ -62,7 +82,8 @@ function start(){
     //base-ground
     ground.show();
    
-
+    //player
+    player1.show();
 }
 
 

@@ -1,0 +1,55 @@
+
+/* 320(10)x160(5) */
+/* waiting
+idle 
+move-fwd 
+attack 
+die */
+
+:root{
+    --player-size: 4;
+}
+
+.playerContainer-1{
+    width: calc(32px*var(--player-size));
+    height: calc(32px*var(--player-size));
+    position: relative;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+#player1{
+    width: calc(320px*var(--player-size));
+    height: calc(160px*var(--player-size));
+    image-rendering: pixelated;
+    animation: movePlayer 1s steps(10) infinite ;
+    position: absolute;
+
+}
+
+.idle{
+    top: calc(0px*var(--player-size));
+}
+
+.jump{
+    top: calc(-32px*var(--player-size));
+}
+
+.move-fwd{
+    top: calc(-64px*var(--player-size));
+}
+
+.attack{
+    top: calc(-96px*var(--player-size));
+}
+
+
+@keyframes movePlayer{
+    0%{
+        transform: translate3d(0px,0,0);
+    }
+    100%{
+        transform: translate3d(-100%,0,0);
+    }
+}
+
