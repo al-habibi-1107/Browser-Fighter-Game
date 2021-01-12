@@ -1,4 +1,4 @@
-
+/* Player 1 */
 /* 320(10)x160(5) */
 /* waiting
 idle 
@@ -6,22 +6,35 @@ move-fwd
 attack 
 die */
 
+/* Player 2
+320(10) * 390(6)
+
+walk (8)
+jump (last 3 )
+punch (last 4)
+
+*/
+
 :root{
     --player-size: 2;
 }
 
-.playerContainer-1{
+.playerContainer-1,.playerContainer-2{
     width: calc(32px*var(--player-size));
     height: calc(32px*var(--player-size));
-    position: relative;
+    position: absolute;
     overflow: hidden;
     z-index: 1000;
+    background: blue;
     
+    
+}
+.playerContainer-2{
+    background: yellow;
 }
 
 
-
-#player1{
+#player1,#player2{
     
     width: calc(320px*var(--player-size));
     height: calc(160px*var(--player-size));
@@ -60,3 +73,33 @@ die */
     }
 }
 
+
+/* .playerContainer-2{
+    position: absolute;
+    width: calc(32px*var(--player-size));
+    height: calc(65px*var(--player-size));
+    overflow: hidden;
+    z-index: 999999999;
+    background: yellow;
+}
+
+#player2{
+    height: calc(390px*var(--player-size));
+    width: calc(320px*var(--player-size));
+    position: absolute;
+   
+   
+}
+
+.walk{
+    animation: movePlayer2 1.2s steps(7) infinite ;
+}
+
+@keyframes movePlayer2{
+    0%{
+        transform: translate3d(0,0,0);
+    }
+    100%{
+        transform: translate3d(-70%,0,0);
+    }
+} */
