@@ -82,7 +82,6 @@ class Player {
        this.container.style.top = `${this.y}px`;
         
        this.container.style.left = `${this.x}px`;
-        console.log(this.y);
         if(this.y  >= ground.y - this.height){
             this.ySpeed = 0;
             
@@ -95,6 +94,13 @@ class Player {
 
 
         
+    }
+
+    attack(villan){
+       var swordPostiton = this.y + 12;
+        if(((this.x+this.width)>villan.x) && ((this.x+this.width)<(villan.x+villan.width))&& swordPostiton>villan.y&&swordPostiton<(villan.y+villan.height)){
+            villan.hp -= 10;
+        }
     }
 }
 
@@ -153,32 +159,41 @@ function update() {
 }
 
 function keyPress(key) {
-
+    // player 1 
     if (key.keyCode == 68) {
+        // p1 move right
         playerContainer1.classList.remove('flip');
         playerImg1.classList.add('move-fwd');
         player1.xSpeed = 2;
     } else if (key.keyCode == 65) {
+        // p1 move left
         playerContainer1.classList.add('flip');
         playerImg1.classList.add('move-fwd');
         player1.xSpeed = -2;
     } else if (key.keyCode == 87 && player1.canJump) {
+        // p1 jump
         playerImg1.classList.add('jump');
         player1.ySpeed -= 6;
     }else if(key.keyCode == 32){
+        // p1 attack
+        player1.attack(player2);
         playerImg1.classList.add('attack');
     }else if(key.keyCode == 38 && player2.canJump){
+        // p2 jump
         player2.ySpeed -= 6;
         playerImg2.classList.add('jump');
     }else if(key.keyCode == 39){
+        // p2 move right
         playerContainer2.classList.remove('flip');
         playerImg2.classList.add('move-fwd');
         player2.xSpeed = 2;
     }else if(key.keyCode == 37){
+        // p2 move left
         player2.xSpeed = -2;
         playerImg2.classList.add('move-fwd');
         playerContainer2.classList.add('flip');
     }else if(key.keyCode == 16){
+        // p2 attack
         playerImg2.classList.add('attack');
     }
 }
@@ -195,6 +210,7 @@ function keyUp(key) {
         // player1.ySpeed = 0;
     }else if(key.keyCode == 32){
         playerImg1.classList.remove('attack');
+        console.log(`player 2 hp : ${player2.hp}`);
     }else if(key.keyCode == 39){
         player2.xSpeed = 0;
         playerImg2.classList.remove('move-fwd');
