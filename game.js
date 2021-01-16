@@ -22,6 +22,9 @@ playerImg2 = document.getElementById('player2');
 // player 2 container
 playerContainer2 = document.querySelector('.playerContainer-2');
 
+playe1_HP = document.querySelector(".p1-hp");
+player2_HP = document.querySelector('.p2-hp');
+
 
 class GroundBlocks {
 
@@ -58,6 +61,8 @@ class Player {
         this.container = container;
         this.img = img;
         this.canJump = false;
+        this.isDead = false;
+        this.isFlip = false;
     }
 
     show() {
@@ -79,6 +84,10 @@ class Player {
         this.y += this.ySpeed;
         this.ySpeed = this.ySpeed + gravity;
 
+        if(this.hp <= 0){
+            this.img.classList.add("die")
+        }
+
        this.container.style.top = `${this.y}px`;
         
        this.container.style.left = `${this.x}px`;
@@ -98,9 +107,16 @@ class Player {
 
     attack(villan){
        var swordPostiton = this.y + 12;
-        if(((this.x+this.width)>villan.x) && ((this.x+this.width)<(villan.x+villan.width))&& swordPostiton>villan.y&&swordPostiton<(villan.y+villan.height)){
+       if(this.isFlip){
+        if(((this.x)>(villan.x+10)) && ((this.x)<(villan.x+villan.width-5))&& swordPostiton>villan.y&&swordPostiton<(villan.y+villan.height)){
             villan.hp -= 10;
         }
+       }else{
+        if(((this.x+this.width)>(villan.x+10)) && ((this.x+this.width)<(villan.x+villan.width-5))&& swordPostiton>villan.y&&swordPostiton<(villan.y+villan.height)){
+            villan.hp -= 10;
+        }
+       }
+
     }
 }
 
@@ -114,8 +130,8 @@ var canJump = false;
 // making grounds
 var ground = new GroundBlocks(canvasXPosition, canvasYPosition + 550, 1000, 50);
 
-var player1 = new Player(canvasXPosition + 20, canvasYPosition  , 1000,playerContainer1,playerImg1);
- var player2 = new Player(canvasXPosition + 100, canvasYPosition , 1000,playerContainer2,playerImg2);
+var player1 = new Player(canvasXPosition + 20, canvasYPosition  , 100,playerContainer1,playerImg1);
+ var player2 = new Player(canvasXPosition + 100, canvasYPosition , 100,playerContainer2,playerImg2);
 
 
 // on resize fix the sizes
@@ -164,11 +180,13 @@ function keyPress(key) {
         // p1 move right
         playerContainer1.classList.remove('flip');
         playerImg1.classList.add('move-fwd');
+        player1.isFlip=false;
         player1.xSpeed = 2;
     } else if (key.keyCode == 65) {
         // p1 move left
         playerContainer1.classList.add('flip');
         playerImg1.classList.add('move-fwd');
+        player1.isFlip=true;
         player1.xSpeed = -2;
     } else if (key.keyCode == 87 && player1.canJump) {
         // p1 jump
@@ -178,21 +196,21 @@ function keyPress(key) {
         // p1 attack
         player1.attack(player2);
         playerImg1.classList.add('attack');
-    }else if(key.keyCode == 38 && player2.canJump){
+    }else if(key.keyCode == 38 && player2.canJump && !player2.isDead){
         // p2 jump
         player2.ySpeed -= 6;
         playerImg2.classList.add('jump');
-    }else if(key.keyCode == 39){
+    }else if(key.keyCode == 39 && !player2.isDead){
         // p2 move right
         playerContainer2.classList.remove('flip');
         playerImg2.classList.add('move-fwd');
         player2.xSpeed = 2;
-    }else if(key.keyCode == 37){
+    }else if(key.keyCode == 37 && !player2.isDead){
         // p2 move left
         player2.xSpeed = -2;
         playerImg2.classList.add('move-fwd');
         playerContainer2.classList.add('flip');
-    }else if(key.keyCode == 16){
+    }else if(key.keyCode == 16 && !player2.isDead){
         // p2 attack
         playerImg2.classList.add('attack');
     }
@@ -210,7 +228,8 @@ function keyUp(key) {
         // player1.ySpeed = 0;
     }else if(key.keyCode == 32){
         playerImg1.classList.remove('attack');
-        console.log(`player 2 hp : ${player2.hp}`);
+        // console.log(`player 2 hp : ${player2.hp}`);
+        player2_HP.innerText = `Enemy Hp: ${player2.hp}`;
     }else if(key.keyCode == 39){
         player2.xSpeed = 0;
         playerImg2.classList.remove('move-fwd');

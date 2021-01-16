@@ -22,7 +22,7 @@ body{
 }
 
 :root{
-    --player-size: 2;
+    --player-size: 3;
 }
 
 .playerContainer-1,.playerContainer-2{
@@ -45,25 +45,34 @@ body{
     width: calc(320px*var(--player-size));
     height: calc(160px*var(--player-size));
     image-rendering: pixelated;
-    animation: movePlayer 0.7s steps(10) infinite ;
     position: absolute;
 
 }
 
 .idle{
     top: calc(0px*var(--player-size));
+    animation: movePlayer 0.7s steps(10) infinite ;
 }
 
 .jump{
     top: calc(-32px*var(--player-size));
+    animation: movePlayer 0.7s steps(10) infinite ;
 }
 
 .move-fwd{
     top: calc(-64px*var(--player-size));
+    animation: movePlayer 0.7s steps(10) infinite ;
 }
 
 .attack{
     top: calc(-96px*var(--player-size));
+    animation: movePlayer 0.7s steps(10) infinite ;
+}
+
+.die{
+    top: calc(-128px*var(--player-size));
+    animation-fill-mode: forwards;
+    animation: diePlayer 0.7s steps(9) 0s 1 normal forwards;
 }
 
 .flip{
@@ -79,6 +88,25 @@ body{
     }
 }
 
+@keyframes diePlayer{
+    0%{
+        transform: translate3d(0px,0,0);
+    }
+    100%{
+        transform: translate3d(-90%,0,0);
+    }
+}
+
+.hp-bars{
+    background: yellow;
+    width: 800px;
+    position: absolute;
+    left: 300px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px 0 10px;
+
+}
 
 /* .playerContainer-2{
     position: absolute;
