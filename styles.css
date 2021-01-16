@@ -22,7 +22,7 @@ body{
 }
 
 :root{
-    --player-size: 3;
+    --player-size: 2;
 }
 
 .playerContainer-1,.playerContainer-2{
@@ -36,6 +36,8 @@ body{
     
 }
 .playerContainer-2{
+    width: calc(32px*var(--player-size)*2);
+    height: calc(32px*var(--player-size)*2);
     /* background: yellow; */
 }
 
@@ -47,6 +49,11 @@ body{
     image-rendering: pixelated;
     position: absolute;
 
+}
+
+#player2{
+    width: calc(320px*var(--player-size)*2);
+    height: calc(160px*var(--player-size)*2);
 }
 
 .idle{
@@ -74,7 +81,32 @@ body{
     animation-fill-mode: forwards;
     animation: diePlayer 0.7s steps(9) 0s 1 normal forwards;
 }
+/* ENEMY ANIMATIONS */
+.idle-enemy{
+    top: calc(0px*var(--player-size)*2);
+    animation: movePlayer 0.7s steps(10) infinite ;
+}
 
+.jump-enemy{
+    top: calc(-32px*var(--player-size)*2);
+    animation: movePlayer 0.7s steps(10) infinite ;
+}
+
+.move-fwd-enemy{
+    top: calc(-64px*var(--player-size)*2);
+    animation: movePlayer 0.7s steps(10) infinite ;
+}
+
+.attack-enemy{
+    top: calc(-96px*var(--player-size)*2);
+    animation: movePlayer 0.7s steps(10) infinite ;
+}
+
+.die-enemy{
+    top: calc(-128px*var(--player-size)*2);
+    animation-fill-mode: forwards;
+    animation: diePlayer 0.7s steps(9) 0s 1 normal forwards;
+}
 .flip{
     transform: scaleX(-1);
 }
