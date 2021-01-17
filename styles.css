@@ -105,7 +105,7 @@ body{
 .die-enemy{
     top: calc(-128px*var(--player-size)*2);
     animation-fill-mode: forwards;
-    animation: diePlayer 0.7s steps(9) 0s 1 normal forwards;
+    animation: diePlayer 1.3s steps(9) 0s 1 normal forwards;
 }
 .flip{
     transform: scaleX(-1);

@@ -22,7 +22,7 @@ playerImg2 = document.getElementById('player2');
 // player 2 container
 playerContainer2 = document.querySelector('.playerContainer-2');
 
-playe1_HP = document.querySelector(".p1-hp");
+player1_HP = document.querySelector(".p1-hp");
 player2_HP = document.querySelector('.p2-hp');
 
 
@@ -50,7 +50,7 @@ class GroundBlocks {
 
 class Player {
 
-    constructor(x, y, hp,container,img,size) {
+    constructor(x, y, hp,container,img,size,isEnemy) {
         this.x = x;
         this.y = y;
         this.hp = hp;
@@ -64,6 +64,7 @@ class Player {
         this.isDead = false;
         this.isFlip = false;
         this.isAttacking = false;
+        this.isEnemy = isEnemy;
     }
 
     show() {
@@ -87,7 +88,12 @@ class Player {
 
         if(this.hp <= 0){
             this.isDead = true
-            this.img.classList.add("die-enemy")
+            if(this.isEnemy){
+
+                this.img.classList.add("die-enemy");
+            }else{
+                this.img.classList.add("die");
+            }
         }
 
        this.container.style.top = `${this.y}px`;
@@ -108,15 +114,31 @@ class Player {
     }
 
     attack(villan){
-       var swordPostiton = this.y + 12;
-       if(this.isFlip){
-        if(((this.x)>(villan.x+10)) && ((this.x)<(villan.x+villan.width-5))&& swordPostiton>villan.y&&swordPostiton<(villan.y+villan.height)){
-            villan.hp -= 10;
-        }
-       }else{
-        if(((this.x+this.width)>(villan.x+10)) && ((this.x+this.width)<(villan.x+villan.width-5))&& swordPostiton>villan.y&&swordPostiton<(villan.y+villan.height)){
-            villan.hp -= 10;
-        }
+       if(villan.hp >=0){
+
+           if(!this.isEnemy){
+            var swordPostiton = this.y + 12;
+               if(this.isFlip){
+                if(((this.x)>(villan.x+10)) && ((this.x)<(villan.x+villan.width-5))&& swordPostiton>villan.y&&swordPostiton<(villan.y+villan.height)){
+                    villan.hp -= 10;
+                }
+               }else{
+                if(((this.x+this.width)>(villan.x+10)) && ((this.x+this.width)<(villan.x+villan.width-5))&& swordPostiton>villan.y&&swordPostiton<(villan.y+villan.height)){
+                    villan.hp -= 10;
+                }
+               }
+           }else{
+            var swordPostiton = this.y + 20;
+            if(this.isFlip){
+                if(((this.x)>(villan.x+10)) && ((this.x)<(villan.x+villan.width-5))&& swordPostiton>villan.y&&swordPostiton<(villan.y+villan.height)){
+                    villan.hp -= 5;
+                }
+               }else{
+                if(((this.x+this.width)>(villan.x+10)) && ((this.x+this.width)<(villan.x+villan.width-5))&& swordPostiton>villan.y&&swordPostiton<(villan.y+villan.height)){
+                    villan.hp -= 5;
+                }
+               }
+           }
        }
 
     }
@@ -138,20 +160,24 @@ class Player {
 }
 
 function chaseRight(){
-    playerContainer2.classList.remove('flip');
+        playerContainer2.classList.remove('flip');
         playerImg2.classList.add('move-fwd-enemy');
         player2.xSpeed = 1;
+        player2.isFlip = false;
 }
 
 function chaseLeft(){
     player2.xSpeed = -1;
         playerImg2.classList.add('move-fwd-enemy');
         playerContainer2.classList.add('flip');
+        player2.isFlip = true;
 }
 
 function attackPlayer(){
     playerImg2.classList.remove('move-fwd-enemy');
-   // playerImg2.classList.add('attack');
+    playerImg2.classList.add('attack-enemy');
+    player2.attack(player1);
+    player1_HP.innerText = `Hero Hp: ${player1.hp}`;
 }
 
 var canvasXPosition = (window.innerWidth / 2) - 500;
@@ -163,8 +189,8 @@ var canJump = false;
 // making grounds
 var ground = new GroundBlocks(canvasXPosition, canvasYPosition + 550, 1000, 50);
 
-var player1 = new Player(canvasXPosition + 20, canvasYPosition  , 100,playerContainer1,playerImg1,playerSize);
- var player2 = new Player(canvasXPosition + 100, canvasYPosition , 100,playerContainer2,playerImg2,playerSize*2.1);
+var player1 = new Player(canvasXPosition + 20, canvasYPosition  , 100,playerContainer1,playerImg1,playerSize,false);
+ var player2 = new Player(canvasXPosition + 100, canvasYPosition , 100,playerContainer2,playerImg2,playerSize*2.1,true);
 
 
 // on resize fix the sizes
