@@ -1,4 +1,13 @@
 
+
+//TODO
+//Add a enemy damage fix - his attacks and damahge on hero are not perfect
+//Add music and jumping music
+//
+
+
+
+
 canvas = document.getElementById("gameCanvas");
 
 //to fix the height and width of canvas
@@ -65,6 +74,8 @@ class Player {
         this.isFlip = false;
         this.isAttacking = false;
         this.isEnemy = isEnemy;
+        
+        
     }
 
     show() {
@@ -74,12 +85,27 @@ class Player {
 
     update() {
 
+        // left steps
+        if((this.y+this.height >= sideSteps.y && this.y+this.height <= sideSteps.y+5 ) && (this.x+this.width/2>= sideSteps.x && (this.x+2)<=sideSteps.x+sideSteps.width )){
+            
+               if(this.ySpeed>0){
+
+                   playerImg1.classList.remove('jump');
+                   this.ySpeed = 0;
+               }
+               
+           
+        }
 
 
         if (this.x + this.width == canvasXPosition + 1000 && this.xSpeed > 0) {
             this.xSpeed = 0;
+            // this.ySpeed = -3;
+           
         } else if (this.x == canvasXPosition && this.xSpeed < 0) {
             this.xSpeed = 0;
+            // this.ySpeed = -3;
+           
         }
 
         this.x += this.xSpeed;
@@ -103,7 +129,7 @@ class Player {
             this.ySpeed = 0;
             
             this.canJump = true;
-            // this.img.classList.remove('jump');
+            this.img.classList.remove('jump');
         }else{
             this.canJump = false;
         }
@@ -131,11 +157,11 @@ class Player {
             var swordPostiton = this.y + 20;
             if(this.isFlip){
                 if(((this.x)>(villan.x+10)) && ((this.x)<(villan.x+villan.width-5))&& swordPostiton>villan.y&&swordPostiton<(villan.y+villan.height)){
-                    villan.hp -= 5;
+                    villan.hp -= 3;
                 }
                }else{
                 if(((this.x+this.width)>(villan.x+10)) && ((this.x+this.width)<(villan.x+villan.width-5))&& swordPostiton>villan.y&&swordPostiton<(villan.y+villan.height)){
-                    villan.hp -= 5;
+                    villan.hp -= 3;
                 }
                }
            }
@@ -188,9 +214,10 @@ var gravity = 0.1;
 var canJump = false;
 // making grounds
 var ground = new GroundBlocks(canvasXPosition, canvasYPosition + 550, 1000, 50);
+var sideSteps = new GroundBlocks(canvasXPosition+50,canvasYPosition+ 400,100,20);
 
-var player1 = new Player(canvasXPosition + 20, canvasYPosition  , 100,playerContainer1,playerImg1,playerSize,false);
- var player2 = new Player(canvasXPosition + 100, canvasYPosition , 100,playerContainer2,playerImg2,playerSize*2.1,true);
+var player1 = new Player(canvasXPosition + 50, canvasYPosition  , 100,playerContainer1,playerImg1,playerSize,false);
+ var player2 = new Player(canvasXPosition + 1000 - 20, canvasYPosition , 100,playerContainer2,playerImg2,playerSize*2.1,true);
 
 
 // on resize fix the sizes
@@ -217,6 +244,7 @@ function start() {
 
     //base-ground
     ground.show();
+    sideSteps.show();
 
     //player
     player1.show();
@@ -250,8 +278,10 @@ function keyPress(key) {
         player1.xSpeed = -2;
     } else if (key.keyCode == 87 && player1.canJump) {
         // p1 jump
-        // playerImg1.classList.add('jump');
+        player1.jump = true;
+        playerImg1.classList.add('jump');
         player1.ySpeed -= 6;
+        
     }else if(key.keyCode == 32){
         // p1 attack
         if(!player1.isAttacking){
@@ -260,24 +290,7 @@ function keyPress(key) {
         }
         playerImg1.classList.add('attack');
     }
-    // else if(key.keyCode == 38 && player2.canJump && !player2.isDead){
-    //     // p2 jump
-    //     player2.ySpeed -= 6;
-    //     playerImg2.classList.add('jump-enemy');
-    // }else if(key.keyCode == 39 && !player2.isDead){
-    //     // p2 move right
-    //     playerContainer2.classList.remove('flip');
-    //     playerImg2.classList.add('move-fwd-enemy');
-    //     player2.xSpeed = 2;
-    // }else if(key.keyCode == 37 && !player2.isDead){
-    //     // p2 move left
-    //     player2.xSpeed = -2;
-    //     playerImg2.classList.add('move-fwd-enemy');
-    //     playerContainer2.classList.add('flip');
-    // }else if(key.keyCode == 16 && !player2.isDead){
-    //     // p2 attack
-    //     playerImg2.classList.add('attack-enemy');
-    // }
+    
 }
 
 function keyUp(key) {
@@ -289,6 +302,7 @@ function keyUp(key) {
         player1.xSpeed = 0;
         playerImg1.classList.remove('move-fwd');
     } else if (key.keyCode == 87) {
+        player1.jump = false
         // player1.ySpeed = 0;
     }else if(key.keyCode == 32){
         playerImg1.classList.remove('attack');
